@@ -87,7 +87,7 @@ function SearchBar() {
           onChange={handleInputChange}
           onFocus={() => setShowResults(true)}
           placeholder="Search location..."
-          className="w-full px-4 py-2 pl-10 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-4 py-2 pl-10 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           aria-label="Search location"
           aria-expanded={showResults && results.length > 0}
           aria-haspopup="listbox"
@@ -129,18 +129,18 @@ function SearchBar() {
       {/* Search Results Dropdown */}
       {showResults && results.length > 0 && (
         <div
-          className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto custom-scrollbar"
+          className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto custom-scrollbar"
           role="listbox"
         >
           {results.map((result, index) => (
             <button
               key={index}
               onClick={() => handleResultClick(result)}
-              className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors border-b border-gray-100 last:border-b-0"
+              className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700 last:border-b-0"
               role="option"
               aria-label={result.display_name}
             >
-              <div className="text-sm text-gray-800">{result.display_name}</div>
+              <div className="text-sm text-gray-800 dark:text-gray-200">{result.display_name}</div>
             </button>
           ))}
         </div>

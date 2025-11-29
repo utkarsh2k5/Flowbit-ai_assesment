@@ -16,6 +16,8 @@ interface MapState {
   wmsLayerVisible: boolean
   drawingMode: 'none' | 'marker' | 'polyline' | 'polygon' | null
   selectedFeature: string | null
+  sidebarOpen: boolean
+  darkMode: boolean
 
   // Actions
   setCenter: (center: LatLngExpression) => void
@@ -26,6 +28,9 @@ interface MapState {
   setWmsLayerVisible: (visible: boolean) => void
   setDrawingMode: (mode: 'none' | 'marker' | 'polyline' | 'polygon' | null) => void
   setSelectedFeature: (id: string | null) => void
+  setSidebarOpen: (open: boolean) => void
+  setDarkMode: (dark: boolean) => void
+  toggleDarkMode: () => void
   clearAllFeatures: () => void
   loadFeaturesFromStorage: () => void
   saveFeaturesToStorage: () => void
@@ -40,6 +45,8 @@ export const useMapStore = create<MapState>((set, get) => ({
   wmsLayerVisible: true,
   drawingMode: null,
   selectedFeature: null,
+  sidebarOpen: true,
+  darkMode: false,
 
   setCenter: (center) => set({ center }),
   setZoom: (zoom) => set({ zoom }),
@@ -64,6 +71,19 @@ export const useMapStore = create<MapState>((set, get) => ({
   setWmsLayerVisible: (visible) => set({ wmsLayerVisible: visible }),
   setDrawingMode: (mode) => set({ drawingMode: mode }),
   setSelectedFeature: (id) => set({ selectedFeature: id }),
+  setSidebarOpen: (open) => set({ sidebarOpen: open }),
+  setDarkMode: (dark) => {
+    set({ darkMode: dark })
+    if (dark) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  },
+  toggleDarkMode: () => {
+    const current = get().darkMode
+    get().setDarkMode(!current)
+  },
   clearAllFeatures: () => set({ features: [], selectedFeature: null }),
 
   loadFeaturesFromStorage: () => {
