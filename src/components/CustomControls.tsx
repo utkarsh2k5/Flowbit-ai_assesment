@@ -8,7 +8,6 @@ function CustomControls() {
   const [container, setContainer] = useState<HTMLElement | null>(null)
 
   useEffect(() => {
-    // Find the map container element
     const mapContainer = map.getContainer().parentElement
     if (mapContainer) {
       setContainer(mapContainer)
@@ -37,7 +36,6 @@ function CustomControls() {
 
   const controls = (
     <div className="absolute bottom-6 right-6 z-[1000] flex flex-col space-y-2">
-      {/* Zoom Controls */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
         <button
           onClick={handleZoomIn}
@@ -69,17 +67,11 @@ function CustomControls() {
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M20 12H4"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
           </svg>
         </button>
       </div>
 
-      {/* Fullscreen Toggle */}
       <button
         onClick={handleFullscreen}
         className="w-10 h-10 bg-white dark:bg-gray-800 rounded-lg shadow-lg flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-700"
@@ -118,11 +110,9 @@ function CustomControls() {
     </div>
   )
 
-  // Render controls using portal to the map container's parent
   if (!container) return null
 
   return createPortal(controls, container)
 }
 
 export default CustomControls
-

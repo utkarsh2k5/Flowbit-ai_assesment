@@ -1,5 +1,3 @@
-/// <reference types="vite/client" />
-
 declare module 'leaflet' {
   import * as L from 'leaflet'
   export = L
@@ -11,4 +9,3 @@ declare module 'leaflet-draw' {
   export = L
   export as namespace L
 }
-

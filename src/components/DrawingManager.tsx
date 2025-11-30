@@ -4,8 +4,6 @@ import L from 'leaflet'
 import 'leaflet-draw'
 import { useMapStore } from '../store/mapStore'
 import type { DrawFeature } from '../store/mapStore'
-
-// Fix for default marker icons in Leaflet with Vite
 import icon from 'leaflet/dist/images/marker-icon.png'
 import iconShadow from 'leaflet/dist/images/marker-shadow.png'
 
@@ -23,17 +21,11 @@ L.Marker.prototype.options.icon = DefaultIcon
 function DrawingManager() {
   const map = useMap()
   const drawControlRef = useRef<L.Control.Draw | null>(null)
-  const {
-    drawingMode,
-    setDrawingMode,
-    addFeature,
-    saveFeaturesToStorage,
-  } = useMapStore()
+  const { drawingMode, setDrawingMode, addFeature, saveFeaturesToStorage } = useMapStore()
 
   useEffect(() => {
     if (!map) return
 
-    // Initialize draw control
     const drawControl = new L.Control.Draw({
       position: 'topright',
       draw: {
@@ -66,7 +58,6 @@ function DrawingManager() {
     drawControlRef.current = drawControl
     map.addControl(drawControl)
 
-    // Handle draw events
     const handleDrawCreated = (e: L.DrawEvents.Created) => {
       const { layer, layerType } = e
       const id = `feature-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
@@ -101,9 +92,7 @@ function DrawingManager() {
     const handleDrawDeleted = (e: L.DrawEvents.Deleted) => {
       const { layers } = e
       layers.eachLayer((layer: L.Layer) => {
-        const feature = Array.from(useMapStore.getState().features).find(
-          (f) => f.layer === layer
-        )
+        const feature = Array.from(useMapStore.getState().features).find(f => f.layer === layer)
         if (feature) {
           useMapStore.getState().removeFeature(feature.id)
         }
@@ -114,9 +103,7 @@ function DrawingManager() {
     const handleDrawEdited = (e: L.DrawEvents.Edited) => {
       const { layers } = e
       layers.eachLayer((layer: L.Layer) => {
-        const feature = Array.from(useMapStore.getState().features).find(
-          (f) => f.layer === layer
-        )
+        const feature = Array.from(useMapStore.getState().features).find(f => f.layer === layer)
         if (feature) {
           let geometry: LatLngExpression | LatLngExpression[] | LatLngExpression[][]
 
@@ -151,7 +138,6 @@ function DrawingManager() {
     }
   }, [map, addFeature, setDrawingMode, saveFeaturesToStorage])
 
-  // Handle drawing mode changes
   useEffect(() => {
     if (!drawControlRef.current || !map) return
 
@@ -184,4 +170,3 @@ function DrawingManager() {
 }
 
 export default DrawingManager
-

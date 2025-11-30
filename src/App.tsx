@@ -13,7 +13,6 @@ function App() {
 
   return (
     <div className="relative w-full h-screen flex flex-col bg-white dark:bg-gray-900">
-      {/* Header with Search */}
       <header className="bg-white dark:bg-gray-800 shadow-sm z-10 px-4 py-3 relative border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -29,12 +28,9 @@ function App() {
         </div>
       </header>
 
-      {/* Main Content Area */}
       <div className="flex-1 relative overflow-hidden">
-        {/* Sidebar */}
         <Sidebar />
 
-        {/* Map Container */}
         <div className="w-full h-full relative" style={{ zIndex: 1 }}>
           <MapContainer
             center={center}
@@ -53,4 +49,3 @@ function App() {
 }
 
 export default App
-

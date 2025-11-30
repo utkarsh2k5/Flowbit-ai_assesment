@@ -5,6 +5,8 @@ function Sidebar() {
     features,
     wmsLayerVisible,
     setWmsLayerVisible,
+    aerialLayerVisible,
+    setAerialLayerVisible,
     drawingMode,
     setDrawingMode,
     removeFeature,
@@ -37,7 +39,6 @@ function Sidebar() {
 
   return (
     <>
-      {/* Sidebar */}
       <aside
         className={`${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
@@ -45,26 +46,40 @@ function Sidebar() {
         aria-label="Layer management sidebar"
       >
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Layer Management</h2>
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+            Layer Management
+          </h2>
         </div>
 
         <div className="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4">
-          {/* WMS Layer Toggle */}
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Base Layers</h3>
             <label className="flex items-center space-x-2 cursor-pointer">
               <input
                 type="checkbox"
                 checked={wmsLayerVisible}
-                onChange={(e) => setWmsLayerVisible(e.target.checked)}
+                onChange={e => setWmsLayerVisible(e.target.checked)}
                 className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
                 aria-label="Toggle WMS satellite imagery layer"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">Satellite/Drone Imagery (WMS)</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Satellite/Drone Imagery (WMS)
+              </span>
+            </label>
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={aerialLayerVisible}
+                onChange={e => setAerialLayerVisible(e.target.checked)}
+                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+                aria-label="Toggle aerial imagery layer"
+              />
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Aerial Imagery (Esri)
+              </span>
             </label>
           </div>
 
-          {/* Drawing Tools */}
           <div className="space-y-2">
             <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Drawing Tools</h3>
             <div className="flex flex-col space-y-2">
@@ -104,7 +119,6 @@ function Sidebar() {
             </div>
           </div>
 
-          {/* Features List */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -122,9 +136,11 @@ function Sidebar() {
             </div>
             <div className="space-y-1 max-h-64 overflow-y-auto custom-scrollbar">
               {features.length === 0 ? (
-                <p className="text-xs text-gray-500 dark:text-gray-400 italic">No features drawn yet</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 italic">
+                  No features drawn yet
+                </p>
               ) : (
-                features.map((feature) => (
+                features.map(feature => (
                   <div
                     key={feature.id}
                     className={`p-2 rounded border cursor-pointer transition-colors ${
@@ -135,7 +151,7 @@ function Sidebar() {
                     onClick={() => setSelectedFeature(feature.id)}
                     role="button"
                     tabIndex={0}
-                    onKeyDown={(e) => {
+                    onKeyDown={e => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         setSelectedFeature(feature.id)
                       }
@@ -147,10 +163,12 @@ function Sidebar() {
                         <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
                           {getFeatureTypeLabel(feature.type)}
                         </span>
-                        <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">#{feature.id.slice(-6)}</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                          #{feature.id.slice(-6)}
+                        </span>
                       </div>
                       <button
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation()
                           removeFeature(feature.id)
                           useMapStore.getState().saveFeaturesToStorage()
@@ -173,4 +191,3 @@ function Sidebar() {
 }
 
 export default Sidebar
-
