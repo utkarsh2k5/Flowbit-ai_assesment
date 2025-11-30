@@ -72,11 +72,7 @@ function SearchBar() {
     setResults([])
   }
 
-  // Update map view when center changes (triggered by store)
-  useEffect(() => {
-    // This effect will trigger map updates through the MapEvents component
-    // The center change is already handled by the store
-  }, [center])
+  useEffect(() => {}, [center])
 
   return (
     <div className="relative w-full max-w-md">
@@ -126,7 +122,6 @@ function SearchBar() {
         )}
       </div>
 
-      {/* Search Results Dropdown */}
       {showResults && results.length > 0 && (
         <div
           className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto custom-scrollbar"
@@ -150,4 +145,3 @@ function SearchBar() {
 }
 
 export default SearchBar
-

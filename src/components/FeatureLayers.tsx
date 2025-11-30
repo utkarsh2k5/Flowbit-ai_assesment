@@ -3,8 +3,6 @@ import { useMap } from 'react-leaflet'
 import L from 'leaflet'
 import { useMapStore } from '../store/mapStore'
 import type { DrawFeature } from '../store/mapStore'
-
-// Fix for default marker icons
 import icon from 'leaflet/dist/images/marker-icon.png'
 import iconShadow from 'leaflet/dist/images/marker-shadow.png'
 
@@ -23,12 +21,9 @@ function FeatureLayers() {
   const layersRef = useRef<Map<string, L.Layer>>(new Map())
   const previousFeaturesLengthRef = useRef<number>(0)
 
-  // Separate effect to set layer references only when new features are added
-  // This prevents infinite loops by not running on every feature update
   useEffect(() => {
     if (features.length > previousFeaturesLengthRef.current) {
-      // New features were added, set their layer references
-      features.forEach((feature) => {
+      features.forEach(feature => {
         if (!feature.layer) {
           const layer = layersRef.current.get(feature.id)
           if (layer) {
@@ -38,18 +33,15 @@ function FeatureLayers() {
       })
       previousFeaturesLengthRef.current = features.length
     } else if (features.length < previousFeaturesLengthRef.current) {
-      // Features were removed, update the length ref
       previousFeaturesLengthRef.current = features.length
     }
-  }, [features.length]) // Only depend on length, not the array itself
+  }, [features.length])
 
   useEffect(() => {
     if (!map) return
 
-    // Track which features we need to keep
-    const currentFeatureIds = new Set(features.map((f) => f.id))
-    
-    // Remove layers for features that no longer exist
+    const currentFeatureIds = new Set(features.map(f => f.id))
+
     layersRef.current.forEach((layer, id) => {
       if (!currentFeatureIds.has(id) && !id.startsWith('highlight-')) {
         map.removeLayer(layer)
@@ -57,16 +49,12 @@ function FeatureLayers() {
       }
     })
 
-    // Add or update features as layers
-    features.forEach((feature) => {
-      // Check if layer already exists for this feature
+    features.forEach(feature => {
       const existingLayer = layersRef.current.get(feature.id)
       if (existingLayer && feature.layer === existingLayer) {
-        // Layer already exists and matches, skip creating new one
         return
       }
 
-      // Remove old layer if it exists
       if (existingLayer) {
         map.removeLayer(existingLayer)
       }
@@ -93,10 +81,8 @@ function FeatureLayers() {
         return
       }
 
-      // Add popup
       const popupContent = `
         <div>
-          <strong>${feature.type}</strong><br/>
           <button 
             class="delete-feature-btn" 
             data-feature-id="${feature.id}"
@@ -108,19 +94,16 @@ function FeatureLayers() {
       `
       layer.bindPopup(popupContent)
 
-      // Handle click
       layer.on('click', () => {
         setSelectedFeature(feature.id)
       })
 
-      // Handle delete button click
       layer.on('popupopen', () => {
         const btn = document.querySelector(`.delete-feature-btn[data-feature-id="${feature.id}"]`)
         if (btn) {
-          // Remove existing listener if any
           const newBtn = btn.cloneNode(true) as HTMLElement
           btn.parentNode?.replaceChild(newBtn, btn)
-          
+
           newBtn.addEventListener('click', () => {
             useMapStore.getState().removeFeature(feature.id)
             useMapStore.getState().saveFeaturesToStorage()
@@ -133,8 +116,7 @@ function FeatureLayers() {
       layersRef.current.set(feature.id, layer)
     })
 
-    // Handle selected feature highlighting separately to avoid re-renders
-    features.forEach((feature) => {
+    features.forEach(feature => {
       const layer = layersRef.current.get(feature.id)
       if (!layer) return
 
@@ -142,7 +124,6 @@ function FeatureLayers() {
       const existingHighlight = layersRef.current.get(highlightKey)
 
       if (feature.id === selectedFeature) {
-        // Add highlight if not already present
         if (!existingHighlight) {
           if (layer instanceof L.Marker) {
             const circle = L.circle(layer.getLatLng(), {
@@ -161,12 +142,11 @@ function FeatureLayers() {
           }
         }
       } else {
-        // Remove highlight if present
         if (existingHighlight) {
           map.removeLayer(existingHighlight)
           layersRef.current.delete(highlightKey)
         }
-        // Reset style for non-selected features
+
         if (layer instanceof L.Polyline || layer instanceof L.Polygon) {
           layer.setStyle({
             color: '#3388ff',
@@ -177,7 +157,7 @@ function FeatureLayers() {
     })
 
     return () => {
-      layersRef.current.forEach((layer) => {
+      layersRef.current.forEach(layer => {
         map.removeLayer(layer)
       })
       layersRef.current.clear()
@@ -188,4 +168,3 @@ function FeatureLayers() {
 }
 
 export default FeatureLayers
-

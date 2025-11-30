@@ -1,4 +1,3 @@
-/* Leaflet CSS - must be imported before Tailwind */
 @import 'leaflet/dist/leaflet.css';
 @import 'leaflet-draw/dist/leaflet.draw.css';
 
@@ -6,12 +5,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom styles */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: white;
@@ -28,14 +26,16 @@ body.dark {
   overflow: hidden;
 }
 
-/* Fix for Leaflet default marker icons */
 .leaflet-container {
   font-family: inherit;
 }
 
-/* Custom scrollbar for sidebar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -63,3 +63,38 @@ body.dark {
   background: #9ca3af;
 }
 
+.leaflet-draw-toolbar a {
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.leaflet-draw-toolbar a:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.05);
+}
+
+.leaflet-draw-toolbar a.leaflet-draw-edit-edit:hover,
+.leaflet-draw-toolbar a.leaflet-draw-edit-remove:hover {
+  background-color: #e8e8e8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.dark .leaflet-draw-toolbar a:hover {
+  background-color: #374151;
+}
+
+.dark .leaflet-draw-toolbar a.leaflet-draw-edit-edit:hover,
+.dark .leaflet-draw-toolbar a.leaflet-draw-edit-remove:hover {
+  background-color: #4b5563;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.leaflet-draw-toolbar a.leaflet-draw-action {
+  background-color: #007bff;
+  color: white;
+}
+
+.leaflet-draw-toolbar a.leaflet-draw-action:hover {
+  background-color: #0056b3;
+}
