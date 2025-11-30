@@ -1,4 +1,4 @@
-\Satellite Imagery & AOI Manager
+Satellite Imagery & AOI Manager
 
 A React-based single-page application for displaying satellite/drone imagery with interactive map features, allowing users to draw, manage, and persist Areas of Interest (AOI).
 
